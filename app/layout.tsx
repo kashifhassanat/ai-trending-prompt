@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ai-trending-prompt.com'),
@@ -99,11 +97,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <Header />
-        <main id="main-content">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
