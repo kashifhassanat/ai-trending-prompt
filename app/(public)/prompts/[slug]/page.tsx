@@ -300,7 +300,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                   {p.number}. {p.title}
                 </a>
                 <span style={{ fontSize: '0.775rem', color: 'var(--text-muted)' }}>
-                  {p.modelRecommended}
+                  {p.recommendedTools && p.recommendedTools.length > 0
+                    ? `Optimized for ${p.recommendedTools.length} leading AI tools`
+                    : p.modelRecommended}
                 </span>
               </div>
             ))}

@@ -88,7 +88,7 @@ export function Footer() {
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} AI Trending Prompt. All rights reserved.</p>
           <p style={{ fontSize: '0.8rem' }}>
-            Prompts curated for external generation tools (Midjourney, Flux, Stable Diffusion, DALL-E).
+            Prompts designed for today&apos;s leading AI creation tools.
           </p>
         </div>
       </div>

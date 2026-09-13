@@ -7,12 +7,15 @@ export const metadata: Metadata = {
     default: 'AI Trending Prompt | Discover Trending AI Prompts with Real Examples',
     template: '%s | AI Trending Prompt'
   },
-  description: 'Discover trending AI prompts with real examples, copy-paste prompts, and step-by-step instructions. Curated for creators using Midjourney, Flux, and Stable Diffusion.',
+  description: 'Discover trending AI prompts with real examples, copy-paste prompts, and step-by-step instructions. Prompts designed for today\'s leading AI creation tools.',
   keywords: [
     'AI prompts',
     'trending AI prompts',
-    'Midjourney prompts',
+    'Google Gemini prompts',
+    'ChatGPT prompts',
+    'AI creation workflows',
     'Flux prompts',
+    'Midjourney prompts',
     '80s retro photo prompts',
     'vintage photography AI',
     'copy paste prompts'

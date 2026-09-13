@@ -335,7 +335,36 @@ export class MockAITextProvider implements AITextProvider {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       }
-    ].slice(0, count);
+    ];
+
+    const finalPrompts: Prompt[] = prompts.slice(0, count).map(p => ({
+      ...p,
+      recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+      compatibleTools: ['stable-diffusion', 'dall-e'],
+      toolSpecificNotes: [
+        {
+          toolId: 'gemini',
+          toolName: 'Google Gemini',
+          note: 'In Google Gemini (with Imagen 3), paste the prompt directly. Imagen 3 excels at soft fabric textures and natural warmth without needing CLI flags.'
+        },
+        {
+          toolId: 'chatgpt',
+          toolName: 'ChatGPT',
+          note: 'Instruct ChatGPT (DALL-E 3) to render with authentic analog photographic depth and subtle grain, rather than digital 3D smoothing.'
+        },
+        {
+          toolId: 'flux',
+          toolName: 'Flux',
+          note: 'Specify "35mm analog film scan, authentic skin pores, unretouched texture" in Flux.1 Dev for lifelike micro-details.'
+        },
+        {
+          toolId: 'midjourney',
+          toolName: 'Midjourney',
+          note: 'Append "--ar 4:3 --v 6.1 --style raw" to disengage hyper-polished digital sheen and preserve period color fidelity.'
+        }
+      ],
+      modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)'
+    }));
 
     return {
       id: `art-${slug}`,
@@ -343,7 +372,7 @@ export class MockAITextProvider implements AITextProvider {
       title: `${count} Best ${config.topic}`,
       subtitle: `Master exact prompts, camera simulations, and styling for authentic ${config.topic.toLowerCase()} aesthetics.`,
       metaTitle: `${count} Best ${config.topic} (With Real Examples & Step-by-Step Tips)`,
-      metaDescription: `Discover the top ${count} ${config.topic.toLowerCase()} with tested prompts, camera settings, and troubleshooting for Midjourney & Flux.`,
+      metaDescription: `Discover the top ${count} ${config.topic.toLowerCase()} with tested prompts, camera settings, and troubleshooting. Prompts designed for today's leading AI creation tools.`,
       canonicalUrl: `https://ai-trending-prompt.com/prompts/${slug}`,
       robotsDirective: 'index, follow',
       indexable: true,
@@ -352,9 +381,9 @@ export class MockAITextProvider implements AITextProvider {
       // FIRST-CLASS SEARCH INTENT & PSEO FIELDS (MANDATORY)
       primaryQuery: config.primaryQuery || `${config.topic.toLowerCase()} ai prompts`,
       secondaryQueries: config.secondaryQueries || [
-        `${config.topic.toLowerCase()} midjourney`,
+        `${config.topic.toLowerCase()} ai prompt recipe`,
         `how to prompt ${config.topic.toLowerCase()}`,
-        `best ${config.topic.toLowerCase()} flux recipe`
+        `best ${config.topic.toLowerCase()} prompt examples`
       ],
       searchIntent: config.searchIntent,
       targetAudience: config.targetAudience,
@@ -369,7 +398,7 @@ export class MockAITextProvider implements AITextProvider {
       sourceTrendId: config.sourceTrendId || 'trend-80s-retro',
       trendStatus: 'TRENDING',
       ogTitle: `${count} Best ${config.topic} (With Real Examples & Step-by-Step Tips)`,
-      ogDescription: `Discover the top ${count} ${config.topic.toLowerCase()} with tested prompts, camera settings, and troubleshooting for Midjourney & Flux.`,
+      ogDescription: `Discover the top ${count} ${config.topic.toLowerCase()} with tested prompts, camera settings, and troubleshooting. Prompts designed for today's leading AI creation tools.`,
       ogImage: '/images/prompts/80s-retro/cover.jpg',
       author: {
         name: 'Elena Vance',
@@ -391,10 +420,10 @@ export class MockAITextProvider implements AITextProvider {
       introduction: [
         `Creating authentic ${config.topic.toLowerCase()} in modern AI tools often suffers from common pitfalls: synthetic plastic skin, contemporary background intrusions, and generic oversaturation.`,
         `To recreate genuine visual memory, prompt engineering must guide the model with period-accurate photographic optics, tactile fabrics, and era-specific lighting techniques.`,
-        `Here are ${count} thoroughly tested, genuinely distinct prompts designed to work reliably across Midjourney, Flux, and Stable Diffusion.`
+        `Here are ${count} thoroughly tested, genuinely distinct prompts designed for today's leading AI creation tools.`
       ],
       quickOverviewHeading: `Quick Overview: The ${count} Prompts`,
-      prompts,
+      prompts: finalPrompts,
       howToGetBetterResults: {
         title: `How to Get Better Results with ${config.topic}`,
         points: [
@@ -408,10 +437,10 @@ export class MockAITextProvider implements AITextProvider {
           },
           {
             headline: '3. Anchor the Wardrobe with Tactile Fabrics',
-            description: 'AI easily confuses eras unless you specify concrete textures like acid-wash denim, pastel cable-knits, or sharp structured wool.'
+            description: 'Describe tangible period textiles (heavy denim, ribbed knit, velour) to ground the visual styling.'
           },
           {
-            headline: '4. Choose 4:3 or 5:4 Ratios',
+            headline: '4. Choose Period Aspect Ratios',
             description: 'Aspect ratios matter: wide modern 16:9 formats trigger contemporary cinematic training data, while 4:3 matches classic prints.'
           }
         ]
@@ -419,7 +448,7 @@ export class MockAITextProvider implements AITextProvider {
       practicalTips: [
         {
           headline: 'Disable Engine Polish with Raw Modes',
-          description: 'Always append `--style raw` in Midjourney or prompt for "unretouched skin pores" in Flux to avoid beauty-filter smoothness.'
+          description: 'Across leading tools, request "unretouched skin pores" or use `--style raw` to avoid beauty-filter smoothness.'
         },
         {
           headline: 'Use Exact Background Props',
@@ -455,13 +484,13 @@ export class MockAITextProvider implements AITextProvider {
       faqs: [
         {
           id: 'faq-gen-1',
-          question: `Which AI model works best for ${config.topic.toLowerCase()}?`,
-          answer: 'Both Midjourney v6.1 (with `--style raw`) and Flux.1 Dev provide the highest fidelity for analog emulation, character consistency, and authentic period color grading.'
+          question: `Which AI creation tools work best for ${config.topic.toLowerCase()}?`,
+          answer: 'Our prompts are designed for today\'s leading AI creation tools. Google Gemini and ChatGPT provide excellent conversational prompt synthesis and warm photographic color grading. Flux excels at photorealistic skin texture and typography, while Midjourney offers exceptional analog color palettes.'
         },
         {
           id: 'faq-gen-2',
           question: 'Can I use these prompts in image-to-image with my personal photos?',
-          answer: 'Yes. In Midjourney, upload your reference image and append the prompt with `--iw 1.2`. In Flux or Stable Diffusion, use ControlNet (Depth or OpenPose) for facial likeness.'
+          answer: 'Yes. In multimodal tools like Gemini and ChatGPT, provide your reference photo for style transfer. In Midjourney, use image reference weights (--iw), and in Flux or Stable Diffusion, use ControlNet for facial likeness.'
         },
         {
           id: 'faq-gen-3',

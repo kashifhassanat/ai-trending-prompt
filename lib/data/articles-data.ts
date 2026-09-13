@@ -7,7 +7,7 @@ export const ARTICLE_80S_RETRO: Article = {
   title: '7 Best 80s Retro AI Photo Prompts',
   subtitle: 'From soft-focus glamour portraits to neon-lit arcades and candid mall snapshots — master the exact prompts, camera simulations, and styling for authentic 1980s nostalgia.',
   metaTitle: '7 Best 80s Retro AI Photo Prompts (With Real Examples & Tips)',
-  metaDescription: 'Discover the 7 best 80s retro AI photo prompts with real generated examples, copy-paste prompts, camera settings, and troubleshooting for Midjourney & Flux.',
+  metaDescription: 'Discover the 7 best 80s retro AI photo prompts with real generated examples, copy-paste prompts, and camera settings. Prompts designed for today\'s leading AI creation tools.',
   canonicalUrl: 'https://ai-trending-prompt.com/prompts/80s-retro-photo-prompts',
   robotsDirective: 'index, follow',
   indexable: true,
@@ -34,7 +34,7 @@ export const ARTICLE_80S_RETRO: Article = {
   sourceTrendId: 'trend-80s-retro',
   trendStatus: 'TRENDING',
   ogTitle: '7 Best 80s Retro AI Photo Prompts (With Real Examples & Tips)',
-  ogDescription: 'Discover the 7 best 80s retro AI photo prompts with real generated examples, copy-paste prompts, camera settings, and troubleshooting for Midjourney & Flux.',
+  ogDescription: 'Discover the 7 best 80s retro AI photo prompts with real generated examples, copy-paste prompts, and camera settings. Prompts designed for today\'s leading AI creation tools.',
   ogImage: '/images/prompts/80s-retro/cover.jpg',
   author: {
     name: 'Elena Vance',
@@ -54,8 +54,8 @@ export const ARTICLE_80S_RETRO: Article = {
   readingTimeMinutes: 7,
   introduction: [
     'The 1980s was one of the most visually distinctive decades in photographic history. Characterized by the warm color saturation of Kodak film, soft diffusion filters in portrait studios, direct on-camera flashes at night, and the emergence of home VHS video, this era holds a powerful nostalgic pull.',
-    'However, prompting modern AI models like Midjourney v6 or Flux for 1980s imagery often yields generic synthwave neon grids or hyper-smooth digital faces that feel undeniably synthetic. To achieve genuine authenticity, you need to prompt for specific physical optics, lighting setups, wardrobe textures, and film stock behaviors.',
-    'Below are 7 meticulously tested, genuinely distinct 80s retro AI photo prompts — each paired with a dedicated example image, step-by-step instructions, and practical tips you can copy and test immediately.'
+    'However, prompting modern AI creation tools for 1980s imagery often yields generic synthwave neon grids or hyper-smooth digital faces that feel undeniably synthetic. To achieve genuine authenticity across leading tools like Google Gemini, ChatGPT, Flux, and Midjourney, you need to prompt for specific physical optics, lighting setups, wardrobe textures, and film stock behaviors.',
+    'Below are 7 meticulously tested, genuinely distinct 80s retro AI photo prompts — each paired with a dedicated example image, step-by-step instructions, and tool-specific guidance you can copy and test immediately across today\'s leading AI creation tools.'
   ],
   quickOverviewHeading: 'Quick Overview: The 7 Prompts',
   prompts: RETRO_80S_PROMPTS,
@@ -83,7 +83,7 @@ export const ARTICLE_80S_RETRO: Article = {
   practicalTips: [
     {
       headline: 'Always Lower the Modern Polish',
-      description: 'In Midjourney, append `--style raw` to disengage the hyper-polished default engine aesthetic. In Flux, explicitly specify "subtle film grain, organic skin pores, unretouched texture".'
+      description: 'Across modern AI tools, request "subtle film grain, organic skin pores, unretouched texture" and avoid hyper-polished keywords. For Midjourney users, append `--style raw`; for Gemini and ChatGPT users, specify authentic vintage analog photography.'
     },
     {
       headline: 'Use Aspect Ratios 4:3 or 5:4',
@@ -119,8 +119,8 @@ export const ARTICLE_80S_RETRO: Article = {
   faqs: [
     {
       id: 'faq-1',
-      question: 'Which AI model works best for 80s retro photo prompts?',
-      answer: 'Both Midjourney v6.1 (with `--style raw`) and Flux.1 Dev excel at 80s retro aesthetics. Midjourney produces unmatched analog color grading and period wardrobe accuracy, while Flux is exceptional at photorealistic skin textures, hand anatomy, and rendering on-screen timestamps.'
+      question: 'Which AI creation tools work best for 80s retro photo prompts?',
+      answer: 'Our prompts are designed for today\'s leading AI creation tools. Google Gemini (Imagen 3) and ChatGPT (DALL·E 3) provide superb natural-language prompt adherence and warm period lighting. Flux excels at lifelike skin pores and typographic timestamps, while Midjourney delivers rich filmic color grading and wardrobe silhouettes. Pick the creation tool best aligned with your personal workflow.'
     },
     {
       id: 'faq-2',
@@ -129,8 +129,8 @@ export const ARTICLE_80S_RETRO: Article = {
     },
     {
       id: 'faq-3',
-      question: 'Can I use these prompts with my own personal photo in image-to-image?',
-      answer: 'Yes! In Midjourney, upload your portrait and use its image URL followed by the prompt with an image weight like `--iw 1.2`. In Stable Diffusion or Flux workflows, use ControlNet (OpenPose or Depth) along with these prompt descriptions to retain your facial likeness while applying the 80s analog styling.'
+      question: 'Can I use these prompts with my own personal photo in image-to-image workflows?',
+      answer: 'Yes! Modern AI creation workflows support image reference inputs. In multimodal tools like Gemini and ChatGPT, you can provide reference photos for style guidance. In visual platforms like Midjourney, use image reference weights (--iw), and in Stable Diffusion or Flux, utilize ControlNet adapters to retain facial likeness while applying the 1980s analog aesthetic.'
     },
     {
       id: 'faq-4',

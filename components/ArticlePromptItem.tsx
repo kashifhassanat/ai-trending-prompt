@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Prompt } from '@/lib/types';
+import { getAIToolById } from '@/lib/data/ai-tools-data';
 import { CopyPromptButton } from './CopyPromptButton';
 
 interface ArticlePromptItemProps {
@@ -66,6 +67,79 @@ export function ArticlePromptItem({ prompt, priority = false }: ArticlePromptIte
           </div>
         )}
 
+        {/* AI Tool Compatibility Bar */}
+        {(prompt.recommendedTools && prompt.recommendedTools.length > 0) && (
+          <div style={{
+            padding: '1rem',
+            backgroundColor: '#F8F9FA',
+            border: '1px solid #E9ECEF',
+            borderRadius: '6px',
+            marginBottom: '1.25rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700, color: 'var(--text-secondary)' }}>
+                Tool Compatibility & Workflow
+              </span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                Designed for today&apos;s leading AI creation tools
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)', marginRight: '0.2rem' }}>
+                Recommended:
+              </span>
+              {prompt.recommendedTools.map(toolId => {
+                const tool = getAIToolById(toolId);
+                return (
+                  <span
+                    key={toolId}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      padding: '0.2rem 0.55rem',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #D4D4CA',
+                      borderRadius: '4px',
+                      fontSize: '0.775rem',
+                      fontWeight: 600,
+                      color: '#121211'
+                    }}
+                  >
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#1E6B47' }} />
+                    {tool?.name || toolId}
+                  </span>
+                );
+              })}
+
+              {prompt.compatibleTools && prompt.compatibleTools.length > 0 && (
+                <>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', marginLeft: '0.4rem', marginRight: '0.2rem' }}>
+                    Compatible:
+                  </span>
+                  {prompt.compatibleTools.map(toolId => {
+                    const tool = getAIToolById(toolId);
+                    return (
+                      <span
+                        key={toolId}
+                        style={{
+                          padding: '0.2rem 0.5rem',
+                          backgroundColor: '#F1F3F5',
+                          borderRadius: '4px',
+                          fontSize: '0.75rem',
+                          color: 'var(--text-secondary)'
+                        }}
+                      >
+                        {tool?.name || toolId}
+                      </span>
+                    );
+                  })}
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="prompt-meta-grid">
           <div>
             <h4 className="prompt-meta-title">
@@ -100,12 +174,44 @@ export function ArticlePromptItem({ prompt, priority = false }: ArticlePromptIte
               {prompt.practicalTip}
               {prompt.modelRecommended && (
                 <div style={{ marginTop: '0.6rem', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-                  Recommended Model: <span style={{ fontWeight: 400 }}>{prompt.modelRecommended}</span>
+                  Compatibility: <span style={{ fontWeight: 400 }}>{prompt.modelRecommended}</span>
                 </div>
               )}
             </div>
           </div>
         </div>
+
+        {/* Tool-Specific Notes Guidance Drawer */}
+        {prompt.toolSpecificNotes && prompt.toolSpecificNotes.length > 0 && (
+          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>
+            <h5 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--text-secondary)', marginBottom: '0.6rem', fontWeight: 700 }}>
+              Tool-Specific Optimizations
+            </h5>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '0.6rem' }}>
+              {prompt.toolSpecificNotes.map(noteItem => (
+                <div
+                  key={noteItem.toolId}
+                  style={{
+                    padding: '0.75rem',
+                    backgroundColor: '#FAFAF8',
+                    border: '1px solid #EBEBE6',
+                    borderRadius: '4px',
+                    fontSize: '0.8rem',
+                    lineHeight: '1.45'
+                  }}
+                >
+                  <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: 'var(--accent)' }} />
+                    {noteItem.toolName}
+                  </div>
+                  <div style={{ color: 'var(--text-secondary)' }}>
+                    {noteItem.note}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

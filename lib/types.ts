@@ -145,6 +145,34 @@ export interface Media {
   credit?: string;
 }
 
+export type AIToolCategory =
+  | 'GENERAL_PURPOSE'
+  | 'IMAGE_GENERATION'
+  | 'VIDEO_GENERATION'
+  | 'REASONING_AND_CODE';
+
+export type AIToolStatus =
+  | 'ACTIVE'
+  | 'BETA'
+  | 'FUTURE_PLANNED'
+  | 'DEPRECATED';
+
+export interface AITool {
+  id: string;
+  name: string;
+  category: AIToolCategory;
+  capabilities: string[];
+  status: AIToolStatus;
+  officialUrl: string;
+  notes: string;
+}
+
+export interface ToolSpecificNote {
+  toolId: string;
+  toolName: string;
+  note: string;
+}
+
 export interface Prompt {
   id: string;
   slug: string;
@@ -155,6 +183,9 @@ export interface Prompt {
   media: Media;
   howToUse: string[];
   practicalTip: string;
+  recommendedTools?: string[];
+  compatibleTools?: string[];
+  toolSpecificNotes?: ToolSpecificNote[];
   modelRecommended?: string;
   aspectRatio?: string;
   categorySlug?: string;

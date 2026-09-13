@@ -3,6 +3,7 @@ export * from './articles-data';
 export * from './categories-data';
 export * from './goals-data';
 export * from './topics-data';
+export * from './ai-tools-data';
 export * from '../providers/trend-provider';
 export * from '../providers/ai-text-provider';
 export * from '../providers/ai-image-provider';

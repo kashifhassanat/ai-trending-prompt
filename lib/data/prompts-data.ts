@@ -20,13 +20,37 @@ export const RETRO_80S_PROMPTS: Prompt[] = [
       'Specify clothing textures such as "oversized pastel knit" or "velour collar" for era accuracy.',
       'Use prompt modifiers like "soft-focus diffusion filter" to soften modern hyper-sharp digital edges.'
     ],
-    practicalTip: 'Add "--style raw" in Midjourney or specify "Kodak Portra 400 film grain, no digital sharpening" in Flux to avoid plastic-looking skin.',
-    modelRecommended: 'Midjourney v6.1 / Flux.1 Dev',
+    practicalTip: 'Specify "Kodak Portra 400 film grain, soft-focus diffusion, unretouched skin pores" to avoid plastic-looking skin across generators.',
+    recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+    compatibleTools: ['stable-diffusion', 'dall-e'],
+    toolSpecificNotes: [
+      {
+        toolId: 'gemini',
+        toolName: 'Google Gemini',
+        note: 'Paste prompt into Gemini (Imagen 3). Imagen 3 excels at soft fabric textures (knit sweaters) and natural skin warmth without requiring custom CLI flags.'
+      },
+      {
+        toolId: 'chatgpt',
+        toolName: 'ChatGPT',
+        note: 'Instruct ChatGPT to generate via DALL·E 3 with explicit instruction: "Render as an authentic 1985 analog photograph with soft diffusion, not a modern digital illustration".'
+      },
+      {
+        toolId: 'flux',
+        toolName: 'Flux',
+        note: 'In Flux.1 Dev, request "35mm analog film scan, soft optical halation, natural hair flyaways". Flux produces ultra-realistic anatomical details and natural hair volume.'
+      },
+      {
+        toolId: 'midjourney',
+        toolName: 'Midjourney',
+        note: 'Use parameters "--ar 4:3 --v 6.1 --style raw" to disengage the hyper-saturated default digital sheen and capture authentic 1985 salon tones.'
+      }
+    ],
+    modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)',
     aspectRatio: '4:3',
     categorySlug: 'retro-vintage',
     tags: ['80s', 'Studio Portrait', 'Glamour', 'Analog Film'],
     createdAt: '2026-09-10T10:00:00Z',
-    updatedAt: '2026-09-12T14:30:00Z'
+    updatedAt: '2026-09-13T20:00:00Z'
   },
   {
     id: 'prompt-80s-2',
@@ -48,12 +72,36 @@ export const RETRO_80S_PROMPTS: Prompt[] = [
       'Keep subject expression relaxed and authentic rather than overly posed.'
     ],
     practicalTip: 'Avoid using generic words like "futuristic neon"; instead, explicitly say "1980s coin-op arcade neon tubes" to prevent generating modern synthwave or cyberpunk aesthetics.',
-    modelRecommended: 'Midjourney v6.1 / Flux.1 Schnell',
+    recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+    compatibleTools: ['stable-diffusion', 'dall-e'],
+    toolSpecificNotes: [
+      {
+        toolId: 'gemini',
+        toolName: 'Google Gemini',
+        note: 'Gemini handles the dark interior lighting and neon bounce reflection cleanly. Emphasize "dimly lit coin-op arcade with CRT glow".'
+      },
+      {
+        toolId: 'chatgpt',
+        toolName: 'ChatGPT',
+        note: 'Remind ChatGPT to keep the CRT monitor curved and vintage with scanlines, rather than generating modern flat LCD screens.'
+      },
+      {
+        toolId: 'flux',
+        toolName: 'Flux',
+        note: 'Flux renders realistic denim fabric weaves and pin badges with sharp physical fidelity. Use guidance scale 3.5 for optimal balance.'
+      },
+      {
+        toolId: 'midjourney',
+        toolName: 'Midjourney',
+        note: 'Use "--style raw --c 5" to keep neon rim lights subtle and prevent overly stylized chromatic blooms.'
+      }
+    ],
+    modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)',
     aspectRatio: '4:3',
     categorySlug: 'retro-vintage',
     tags: ['80s', 'Arcade', 'Neon', 'Streetwear'],
     createdAt: '2026-09-10T10:15:00Z',
-    updatedAt: '2026-09-12T14:30:00Z'
+    updatedAt: '2026-09-13T20:00:00Z'
   },
   {
     id: 'prompt-80s-3',
@@ -75,12 +123,36 @@ export const RETRO_80S_PROMPTS: Prompt[] = [
       'Add "subtle red digital date stamp in bottom right corner" for genuine analog point-and-shoot realism.'
     ],
     practicalTip: 'Mentioning background store types like "record store", "neon boutique", or "arcade corridor" will automatically contextualize the architectural elements without generic modern glass structures.',
-    modelRecommended: 'Midjourney v6.1 / DALL-E 3',
+    recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+    compatibleTools: ['stable-diffusion', 'dall-e'],
+    toolSpecificNotes: [
+      {
+        toolId: 'gemini',
+        toolName: 'Google Gemini',
+        note: 'Gemini captures the natural group composition and authentic nostalgic facial interactions without artificial stiff poses.'
+      },
+      {
+        toolId: 'chatgpt',
+        toolName: 'ChatGPT',
+        note: 'Emphasize "paper shopping bags with bold 80s geometric graphic patterns" so DALL·E does not generate contemporary canvas totes.'
+      },
+      {
+        toolId: 'flux',
+        toolName: 'Flux',
+        note: 'Flux excels at rendering the red digital LED date stamp ("\'86 10 14") in the corner with clean alphanumeric clarity.'
+      },
+      {
+        toolId: 'midjourney',
+        toolName: 'Midjourney',
+        note: 'Add "--ar 4:3 --v 6.1" to capture the architectural scale of the multi-level mall atrium and brass banisters.'
+      }
+    ],
+    modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)',
     aspectRatio: '4:3',
     categorySlug: 'retro-vintage',
     tags: ['80s', 'Mall Culture', 'Candid', 'Fashion'],
     createdAt: '2026-09-10T10:30:00Z',
-    updatedAt: '2026-09-12T14:30:00Z'
+    updatedAt: '2026-09-13T20:00:00Z'
   },
   {
     id: 'prompt-80s-4',
@@ -102,12 +174,36 @@ export const RETRO_80S_PROMPTS: Prompt[] = [
       'The OSD (on-screen display) date gives an immediate visceral sense of home-recorded memory.'
     ],
     practicalTip: 'If your generator produces too much digital noise instead of analog VHS artifacts, replace "noise" with "magnetic video tape color bleed, soft analog resolution".',
-    modelRecommended: 'Flux.1 Dev / Midjourney v6.1',
+    recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+    compatibleTools: ['stable-diffusion', 'dall-e'],
+    toolSpecificNotes: [
+      {
+        toolId: 'gemini',
+        toolName: 'Google Gemini',
+        note: 'Gemini understands the nuance of "magnetic tape color bleed" and renders realistic cathode ray tube warm glow.'
+      },
+      {
+        toolId: 'chatgpt',
+        toolName: 'ChatGPT',
+        note: 'Instruct ChatGPT to avoid generating modern OLED screens; specify "boxy wood-grain CRT television cabinet with rotary channel knobs".'
+      },
+      {
+        toolId: 'flux',
+        toolName: 'Flux',
+        note: 'Flux is unmatched for rendering the exact OSD camcorder text "OCT 26 1984" in monospace block typography.'
+      },
+      {
+        toolId: 'midjourney',
+        toolName: 'Midjourney',
+        note: 'Use "--style raw" to prevent Midjourney from sharpening magnetic tape blur into digital grain.'
+      }
+    ],
+    modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)',
     aspectRatio: '4:3',
     categorySlug: 'retro-vintage',
     tags: ['80s', 'VHS', 'Analog Video', 'Nostalgia'],
     createdAt: '2026-09-10T10:45:00Z',
-    updatedAt: '2026-09-12T14:30:00Z'
+    updatedAt: '2026-09-13T20:00:00Z'
   },
   {
     id: 'prompt-80s-5',
@@ -129,12 +225,36 @@ export const RETRO_80S_PROMPTS: Prompt[] = [
       'Use "Kodachrome 64" to achieve warm, saturated reds and deep rich blacks in the shadows.'
     ],
     practicalTip: 'Specify "worn-in vintage leather patina" so the jacket looks authentically loved rather than glossy polyurethane.',
-    modelRecommended: 'Midjourney v6.1 / Flux.1 Pro',
+    recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+    compatibleTools: ['stable-diffusion', 'dall-e'],
+    toolSpecificNotes: [
+      {
+        toolId: 'gemini',
+        toolName: 'Google Gemini',
+        note: 'Gemini captures golden hour rim lighting on vehicle chrome and weathered brick facades with organic realism.'
+      },
+      {
+        toolId: 'chatgpt',
+        toolName: 'ChatGPT',
+        note: 'Ensure you specify "classic boxy 1980s sports coupe with pop-up headlights" to prevent modern curved vehicle shapes.'
+      },
+      {
+        toolId: 'flux',
+        toolName: 'Flux',
+        note: 'Flux handles the tactile micro-texture of cracked vintage leather and acid-washed denim seams with high fidelity.'
+      },
+      {
+        toolId: 'midjourney',
+        toolName: 'Midjourney',
+        note: 'Add "--ar 4:3 --c 3" for authentic Kodachrome color science with rich warm reds and balanced shadow contrast.'
+      }
+    ],
+    modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)',
     aspectRatio: '4:3',
     categorySlug: 'retro-vintage',
     tags: ['80s', 'Street Style', 'Kodachrome', 'Fashion'],
     createdAt: '2026-09-10T11:00:00Z',
-    updatedAt: '2026-09-12T14:30:00Z'
+    updatedAt: '2026-09-13T20:00:00Z'
   },
   {
     id: 'prompt-80s-6',
@@ -156,12 +276,36 @@ export const RETRO_80S_PROMPTS: Prompt[] = [
       'Combine "dramatic Rembrandt key light" with "warm amber rim light" for depth and separation from dark backgrounds.'
     ],
     practicalTip: 'Adding "medium format Hasselblad 500C portrait, Fujichrome Provia 100F" produces the rich micro-contrast seen in late-80s luxury print magazines.',
-    modelRecommended: 'Midjourney v6.1 / Flux.1 Dev',
+    recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+    compatibleTools: ['stable-diffusion', 'dall-e'],
+    toolSpecificNotes: [
+      {
+        toolId: 'gemini',
+        toolName: 'Google Gemini',
+        note: 'Gemini produces statuesque, elegant studio poses and handles the sharp geometric gold jewelry highlights cleanly.'
+      },
+      {
+        toolId: 'chatgpt',
+        toolName: 'ChatGPT',
+        note: 'Specify "sculpted sharp shoulder pads with tailored wool drape" to guide DALL·E away from casual loose blazers.'
+      },
+      {
+        toolId: 'flux',
+        toolName: 'Flux',
+        note: 'Flux renders matte makeup textures and hair strands with high micro-contrast and realistic anatomy.'
+      },
+      {
+        toolId: 'midjourney',
+        toolName: 'Midjourney',
+        note: 'Apply "--style raw --v 6.1" to ensure dramatic studio shadow falloff without excessive digital glow.'
+      }
+    ],
+    modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)',
     aspectRatio: '4:3',
     categorySlug: 'retro-vintage',
     tags: ['80s', 'High Fashion', 'Editorial', 'Power Dressing'],
     createdAt: '2026-09-10T11:15:00Z',
-    updatedAt: '2026-09-12T14:30:00Z'
+    updatedAt: '2026-09-13T20:00:00Z'
   },
   {
     id: 'prompt-80s-7',
@@ -183,12 +327,36 @@ export const RETRO_80S_PROMPTS: Prompt[] = [
       'The iconic "white Polaroid instant film border" with a handwritten summer date instantly frames the storytelling.'
     ],
     practicalTip: 'To prevent the AI from generating pristine white borders, add "slightly aged instant film frame with slight color shift at edges" to your prompt.',
-    modelRecommended: 'Midjourney v6.1 / DALL-E 3',
+    recommendedTools: ['gemini', 'chatgpt', 'flux', 'midjourney'],
+    compatibleTools: ['stable-diffusion', 'dall-e'],
+    toolSpecificNotes: [
+      {
+        toolId: 'gemini',
+        toolName: 'Google Gemini',
+        note: 'Gemini excels at natural interpersonal emotion and warm sunset sky color grading without stiff facial symmetry.'
+      },
+      {
+        toolId: 'chatgpt',
+        toolName: 'ChatGPT',
+        note: 'Ask ChatGPT to generate with the white instant photo border and nostalgic handwritten marker caption at the bottom margin.'
+      },
+      {
+        toolId: 'flux',
+        toolName: 'Flux',
+        note: 'Flux renders the chemistry color shift (cyan/magenta fading) and instant film emulsion textures faithfully.'
+      },
+      {
+        toolId: 'midjourney',
+        toolName: 'Midjourney',
+        note: 'Use "--ar 4:3 --v 6.1" to capture direct on-camera flash falloff against the sunset backdrop.'
+      }
+    ],
+    modelRecommended: 'Leading AI creation tools (Gemini, ChatGPT, Flux, Midjourney)',
     aspectRatio: '4:3',
     categorySlug: 'retro-vintage',
     tags: ['80s', 'Polaroid', 'Friends', 'Summer Nostalgia'],
     createdAt: '2026-09-10T11:30:00Z',
-    updatedAt: '2026-09-12T14:30:00Z'
+    updatedAt: '2026-09-13T20:00:00Z'
   }
 ];
 

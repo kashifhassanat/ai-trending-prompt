@@ -23,6 +23,7 @@ export interface DetailedCannibalizationResult extends CannibalizationCheckResul
     slugCollision: boolean;
     sameClusterAndIntent: boolean;
     contentAngleOverlap: boolean;
+    toolSwappingDuplicate: boolean;
   };
   specificActionRecommendations: {
     actionType: 'UPDATE_EXISTING' | 'NARROW_SUBTOPIC' | 'CHANGE_INTENT' | 'MERGE_CONTENT';
@@ -31,9 +32,44 @@ export interface DetailedCannibalizationResult extends CannibalizationCheckResul
   }[];
 }
 
+const KNOWN_AI_TOOL_TOKENS = [
+  'midjourney',
+  'flux',
+  'flux1',
+  'dalle',
+  'dall e',
+  'dall-e',
+  'dall·e',
+  'chatgpt',
+  'gemini',
+  'google gemini',
+  'google flow',
+  'deepseek',
+  'stable diffusion',
+  'stablediffusion',
+  'sdxl',
+  'leonardo'
+];
+
+/**
+ * Strips tool keywords to evaluate whether two topics are identical
+ * except for swapped tool names.
+ */
+function normalizeCoreTopic(str: string): string {
+  let cleaned = str.toLowerCase();
+  for (const token of KNOWN_AI_TOOL_TOKENS) {
+    cleaned = cleaned.replace(new RegExp(`\\b${token}\\b`, 'gi'), '');
+  }
+  return cleaned
+    .replace(/\b(for|with|in|using|on|generator|tool|model|version)\b/gi, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 /**
  * PSEO PAGE UNIQUENESS & CANNIBALIZATION CHECK
- * Compares proposed article against existing library across 9 distinct dimensions:
+ * Compares proposed article against existing library across 10 distinct dimensions:
  * 1. primary query
  * 2. secondary queries
  * 3. topic
@@ -43,6 +79,7 @@ export interface DetailedCannibalizationResult extends CannibalizationCheckResul
  * 7. slug similarity
  * 8. semantic similarity
  * 9. content angle
+ * 10. tool-swapping duplicate detection (Strict PSEO guardrail)
  */
 export function checkCannibalization(proposed: ProposedArticleParams): DetailedCannibalizationResult {
   const proposedTitleNorm = proposed.title.toLowerCase().trim();
@@ -61,6 +98,7 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
   let dimSlugCollision = false;
   let dimSameClusterAndIntent = false;
   let dimContentAngleOverlap = false;
+  let dimToolSwappingDuplicate = false;
 
   for (const existing of ALL_ARTICLES) {
     const existingTitle = existing.title.toLowerCase();
@@ -90,7 +128,28 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
       collisionReason = `Primary search query heavily overlaps with existing target "${existingPrimary}".`;
     }
 
-    // 3. Secondary Queries Overlap
+    // 3. Tool-Swapping Duplicate Guardrail
+    // Tool-specific PSEO pages must only be created when there is a genuinely different search intent
+    // and useful tool-specific content. Merely replacing one tool name with another is prohibited.
+    const proposedCore = normalizeCoreTopic(proposedPrimary);
+    const existingCore = normalizeCoreTopic(existingPrimary);
+    if (proposedCore.length > 5 && existingCore.length > 5) {
+      const coreWordsProp = new Set(proposedCore.split(/\s+/).filter(w => w.length > 2));
+      const coreWordsExist = new Set(existingCore.split(/\s+/).filter(w => w.length > 2));
+      let coreCommon = 0;
+      coreWordsProp.forEach(w => { if (coreWordsExist.has(w)) coreCommon++; });
+      const coreSim = coreWordsProp.size > 0 ? (coreCommon / coreWordsProp.size) : 0;
+
+      const isSameOrUndefinedIntent = !proposed.searchIntent || !existing.searchIntent || proposed.searchIntent === existing.searchIntent;
+      if (coreSim >= 0.8 && isSameOrUndefinedIntent) {
+        dimToolSwappingDuplicate = true;
+        highestOverlap = Math.max(highestOverlap, 96);
+        overlappingArticle = existing;
+        collisionReason = `Tool-swapping duplicate detected: Creating separate pages merely by substituting tool names without genuinely different search intent or unique tool-specific content is prohibited.`;
+      }
+    }
+
+    // 4. Secondary Queries Overlap
     if (proposedSecondaries.length > 0 && existingSecondaries.length > 0) {
       const matchCount = proposedSecondaries.filter(sq => existingSecondaries.some(es => es.includes(sq) || sq.includes(es))).length;
       const secOverlapPct = Math.round((matchCount / proposedSecondaries.length) * 100);
@@ -102,7 +161,7 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
       }
     }
 
-    // 4. Title Term Jaccard Similarity
+    // 5. Title Term Jaccard Similarity
     const wordsProp = new Set(proposedTitleNorm.split(/\s+/).filter(w => w.length > 3));
     const wordsExist = new Set(existingTitle.split(/\s+/).filter(w => w.length > 3));
     let common = 0;
@@ -115,7 +174,7 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
       collisionReason = `High title similarity (${jaccard}% word overlap) with existing article "${existing.title}".`;
     }
 
-    // 5. Cluster + Search Intent Collision
+    // 6. Cluster + Search Intent Collision
     if (
       proposed.topicClusterId &&
       existing.topicClusterId &&
@@ -124,7 +183,6 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
       existing.searchIntent === proposed.searchIntent
     ) {
       dimSameClusterAndIntent = true;
-      // If same cluster, same intent, and moderate query overlap, elevate risk
       if (highestOverlap >= 65) {
         highestOverlap = Math.min(100, highestOverlap + 15);
         overlappingArticle = existing;
@@ -132,7 +190,7 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
       }
     }
 
-    // 6. Content Angle Overlap
+    // 7. Content Angle Overlap
     if (proposedAngle && existing.subtitle && existing.subtitle.toLowerCase().includes(proposedAngle)) {
       dimContentAngleOverlap = true;
       highestOverlap = Math.min(100, highestOverlap + 10);
@@ -145,7 +203,8 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
     titleSimilarityPercent: dimTitleSimilarity,
     slugCollision: dimSlugCollision,
     sameClusterAndIntent: dimSameClusterAndIntent,
-    contentAngleOverlap: dimContentAngleOverlap
+    contentAngleOverlap: dimContentAngleOverlap,
+    toolSwappingDuplicate: dimToolSwappingDuplicate
   };
 
   // RED: Likely Cannibalization (highestOverlap >= 80)
@@ -160,28 +219,30 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
         overlapScore: highestOverlap,
         reason: collisionReason
       },
-      recommendation: `High cannibalization risk detected with "${overlappingArticle.title}". Automated generation is blocked to prevent Google index pollution and thin internal competition. Select an alternative path below.`,
+      recommendation: dimToolSwappingDuplicate
+        ? `Tool-swapping duplicate detected against "${overlappingArticle.title}". Automated generation is blocked: PSEO pages must only be created when there is a genuinely different search intent and useful tool-specific content, not merely swapping tool names.`
+        : `High cannibalization risk detected with "${overlappingArticle.title}". Automated generation is blocked to prevent search index dilution and internal keyword competition. Select an alternative path below.`,
       alternativeAngles: [
         `7 80s VHS Camcorder AI Photo Prompts (Granular Hardware Subtopic)`,
         `80s Studio vs Neon Arcade: How to Prompt Both Looks (Comparison Intent)`,
-        `How to Emulate Authentic 80s Kodachrome in Midjourney (How-To Intent)`
+        `How to Emulate Authentic 80s Kodachrome Emulsion (How-To Workflow Intent)`
       ],
       dimensions,
       specificActionRecommendations: [
         {
           actionType: 'UPDATE_EXISTING',
           label: `Update Existing Article`,
-          description: `Add new prompt recipes directly to "${overlappingArticle.title}" to strengthen its ranking authority without creating a duplicate URL.`
+          description: `Add tool-specific notes or parameters directly to "${overlappingArticle.title}" to strengthen its ranking authority without creating a thin duplicate URL.`
         },
         {
           actionType: 'NARROW_SUBTOPIC',
           label: `Create Narrower Subtopic`,
-          description: `Carve out a more specific niche (e.g. focusing exclusively on 80s neon tube lighting or VHS tape tracking artifacts).`
+          description: `Carve out a more specific niche with unique visual scenarios not covered in "${overlappingArticle.title}".`
         },
         {
           actionType: 'CHANGE_INTENT',
           label: `Change Search Intent`,
-          description: `Shift intent from "${proposed.searchIntent || 'INSPIRATION'}" to "HOW_TO", "COMPARISON", or "COMMERCIAL".`
+          description: `Shift search intent from "${proposed.searchIntent || 'INSPIRATION'}" to "HOW_TO", "COMPARISON", or "COMMERCIAL".`
         },
         {
           actionType: 'MERGE_CONTENT',
@@ -224,7 +285,7 @@ export function checkCannibalization(proposed: ProposedArticleParams): DetailedC
   return {
     status: 'GREEN',
     allowGeneration: true,
-    recommendation: 'Distinct PSEO opportunity confirmed. No keyword collision or search intent overlap detected across the current publication index.',
+    recommendation: 'Distinct PSEO opportunity confirmed. No keyword collision, search intent overlap, or tool-swapping duplicate detected across the current publication index.',
     alternativeAngles: [],
     dimensions,
     specificActionRecommendations: []

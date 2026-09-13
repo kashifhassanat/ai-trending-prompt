@@ -20,7 +20,7 @@ export default function AdminPromptsPage() {
             <tr>
               <th style={{ width: '60px' }}>Asset</th>
               <th>Prompt Title & Formula</th>
-              <th>Recommended Model</th>
+              <th>Recommended AI Tools</th>
               <th>Ratio</th>
               <th>Status</th>
             </tr>
@@ -47,7 +47,19 @@ export default function AdminPromptsPage() {
                     {p.promptText}
                   </div>
                 </td>
-                <td>{p.modelRecommended}</td>
+                <td>
+                  {p.recommendedTools && p.recommendedTools.length > 0 ? (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25rem' }}>
+                      {p.recommendedTools.map(t => (
+                        <span key={t} style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', backgroundColor: '#F3F4F6', borderRadius: '4px', fontWeight: 600, color: '#1F2937' }}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <span>{p.modelRecommended}</span>
+                  )}
+                </td>
                 <td>{p.aspectRatio}</td>
                 <td>
                   <span className="status-pill status-pill-green">
