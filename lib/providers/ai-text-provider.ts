@@ -1,10 +1,18 @@
-import { Article, Prompt, SearchIntent, ImageStatus } from '@/lib/types';
+import { Article, Prompt, SearchIntent, ImageStatus, ContentType, ContentBrief } from '@/lib/types';
+import { generateBidirectionalLinks } from '@/lib/services/internal-linking-engine';
+import { ALL_ARTICLES } from '@/lib/data/articles-data';
 
 export interface GenerateArticleConfig {
   topic: string;
+  primaryQuery?: string;
+  secondaryQueries?: string[];
   searchIntent: SearchIntent;
-  contentType: string;
+  contentType: ContentType;
   targetAudience: string;
+  topicId?: string;
+  topicClusterId?: string;
+  parentTopic?: string;
+  contentAngle?: string;
   promptCount: number; // 6 or 7
   imageCount: number;  // matches promptCount
   sourceTrendId?: string;
@@ -13,12 +21,71 @@ export interface GenerateArticleConfig {
 export interface AITextProvider {
   name: string;
   isMock: boolean;
+  generateContentBrief(config: GenerateArticleConfig): Promise<ContentBrief>;
   generateArticle(config: GenerateArticleConfig): Promise<Article>;
 }
 
 export class MockAITextProvider implements AITextProvider {
   name = 'Mock AI Editorial Engine (Claude/GPT-4o Abstraction)';
   isMock = true;
+
+  async generateContentBrief(config: GenerateArticleConfig): Promise<ContentBrief> {
+    const primaryQuery = config.primaryQuery || `${config.topic.toLowerCase()} ai prompts`;
+    const secondaryQueries = config.secondaryQueries || [
+      `${config.topic.toLowerCase()} midjourney`,
+      `how to prompt ${config.topic.toLowerCase()}`,
+      `best ${config.topic.toLowerCase()} flux recipe`
+    ];
+
+    const competing = ALL_ARTICLES.map(a => ({
+      title: a.title,
+      slug: a.slug,
+      similarityScore: a.primaryQuery?.includes(primaryQuery) ? 85 : 35
+    }));
+
+    const links = generateBidirectionalLinks({
+      title: config.topic,
+      primaryQuery,
+      topicClusterId: config.topicClusterId || 'cluster-styles',
+      categorySlug: 'retro-vintage'
+    });
+
+    return {
+      topic: config.topic,
+      primaryQuery,
+      secondaryQueries,
+      searchIntent: config.searchIntent,
+      targetAudience: config.targetAudience,
+      contentAngle: config.contentAngle || `Comprehensive editorial guide providing 6–7 tested prompt formulas for ${config.topic}.`,
+      whyThisPageShouldExist: `Satisfies user search intent for "${primaryQuery}" by providing authentic, copy-ready prompt recipes and visual examples without modern AI smoothness.`,
+      existingCompetingPages: competing,
+      relatedCluster: config.parentTopic || 'Styles',
+      topicClusterId: config.topicClusterId || 'cluster-styles',
+      contentType: config.contentType,
+      recommendedPromptCount: config.promptCount || 7,
+      recommendedPrompts: [
+        'Studio Portrait with period-accurate diffusion filter',
+        'Direct Flash Candid with vintage falloff',
+        'Neon Ambient Low-Light Scene',
+        'Tactile Wardrobe & Fabric Close-up',
+        'Instant Polaroid with Chemical Border',
+        'Authentic Domestic Setting with Period Props',
+        'Street Photography on Period Film Emulsion'
+      ].slice(0, config.promptCount || 7),
+      recommendedVisualExamples: [
+        'Soft-focus studio portrait on painted canvas backdrop',
+        'Harsh on-camera flash snapshot in authentic setting',
+        'Vibrant neon tubes reflected in CRT arcade cabinet',
+        'Acid-wash denim and cable-knit texture detail',
+        'Square Polaroid frame with subtle vignette'
+      ],
+      internalLinkOpportunities: {
+        outbound: links.outboundSuggestions.map(s => ({ targetSlug: s.targetSlug, targetTitle: s.targetArticleTitle, reason: s.reason })),
+        inbound: links.inboundOpportunities.map(o => ({ sourceSlug: o.sourceSlug, sourceTitle: o.sourceArticleTitle, reason: o.reason }))
+      },
+      approvedByAdmin: false
+    };
+  }
 
   async generateArticle(config: GenerateArticleConfig): Promise<Article> {
     const slug = config.topic
@@ -277,13 +344,33 @@ export class MockAITextProvider implements AITextProvider {
       subtitle: `Master exact prompts, camera simulations, and styling for authentic ${config.topic.toLowerCase()} aesthetics.`,
       metaTitle: `${count} Best ${config.topic} (With Real Examples & Step-by-Step Tips)`,
       metaDescription: `Discover the top ${count} ${config.topic.toLowerCase()} with tested prompts, camera settings, and troubleshooting for Midjourney & Flux.`,
+      canonicalUrl: `https://ai-trending-prompt.com/prompts/${slug}`,
+      robotsDirective: 'index, follow',
+      indexable: true,
+      status: 'DRAFT',
+
+      // FIRST-CLASS SEARCH INTENT & PSEO FIELDS (MANDATORY)
+      primaryQuery: config.primaryQuery || `${config.topic.toLowerCase()} ai prompts`,
+      secondaryQueries: config.secondaryQueries || [
+        `${config.topic.toLowerCase()} midjourney`,
+        `how to prompt ${config.topic.toLowerCase()}`,
+        `best ${config.topic.toLowerCase()} flux recipe`
+      ],
       searchIntent: config.searchIntent,
-      targetQuery: config.topic.toLowerCase(),
+      targetAudience: config.targetAudience,
+      topicId: config.topicId || `top-${slug}`,
+      topicClusterId: config.topicClusterId || 'cluster-styles',
+      parentTopic: config.parentTopic || 'Styles',
+      contentType: config.contentType,
+
       publishedAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       lastReviewedAt: new Date().toISOString(),
       sourceTrendId: config.sourceTrendId || 'trend-80s-retro',
       trendStatus: 'TRENDING',
+      ogTitle: `${count} Best ${config.topic} (With Real Examples & Step-by-Step Tips)`,
+      ogDescription: `Discover the top ${count} ${config.topic.toLowerCase()} with tested prompts, camera settings, and troubleshooting for Midjourney & Flux.`,
+      ogImage: '/images/prompts/80s-retro/cover.jpg',
       author: {
         name: 'Elena Vance',
         role: 'Visual Prompt Architect',

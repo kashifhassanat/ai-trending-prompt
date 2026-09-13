@@ -100,14 +100,25 @@ export default function ReviewQueuePage() {
       <div className="review-split-view">
         {/* LEFT: Live Article Preview */}
         <div className="review-preview-panel">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #E5E7EB', marginBottom: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1rem', borderBottom: '1px solid #E5E7EB', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
             <div>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#B84A28', letterSpacing: '0.08em' }}>
-                {selectedArticle.categoryName} • Article Preview
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#B84A28', letterSpacing: '0.08em' }}>
+                  {selectedArticle.categoryName} • Article Preview
+                </span>
+                <span className="status-pill status-pill-blue">
+                  Intent: {selectedArticle.searchIntent}
+                </span>
+                <span className="status-pill status-pill-purple">
+                  {selectedArticle.contentType}
+                </span>
+              </div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#111827', margin: '0.25rem 0 0 0' }}>
                 {selectedArticle.title}
               </h2>
+              <div style={{ fontSize: '0.8rem', color: '#6B7280', marginTop: '0.2rem' }}>
+                Primary Query: <code>&ldquo;{selectedArticle.primaryQuery}&rdquo;</code> • Cluster: <strong>{selectedArticle.parentTopic}</strong>
+              </div>
             </div>
             <Link
               href={`/prompts/${selectedArticle.slug}`}
@@ -116,6 +127,23 @@ export default function ReviewQueuePage() {
             >
               Open in Reader ↗
             </Link>
+          </div>
+
+          {/* Bidirectional Linking Review Callout (Requirement 4) */}
+          <div style={{ padding: '1rem', backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: '6px', marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#1E40AF', textTransform: 'uppercase', marginBottom: '0.35rem' }}>
+              Bidirectional Internal Link Topology
+            </div>
+            <div style={{ fontSize: '0.825rem', color: '#1E3A8A', lineHeight: 1.4 }}>
+              <strong>Inbound Equity:</strong> These {selectedArticle.inboundLinkOpportunities?.length || 2} existing high-authority articles should link to this new page upon publication:
+            </div>
+            <ul style={{ margin: '0.35rem 0 0 0', paddingLeft: '1.25rem', fontSize: '0.8rem', color: '#1E3A8A' }}>
+              {selectedArticle.inboundLinkOpportunities?.map(inb => (
+                <li key={inb.id}>
+                  <strong>{inb.sourceArticleTitle}</strong> &rarr; anchor text: <code>&ldquo;{inb.suggestedAnchorText}&rdquo;</code> (Section: {inb.targetSection})
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* Intro Preview */}

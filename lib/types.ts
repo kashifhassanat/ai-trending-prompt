@@ -20,6 +20,84 @@ export type SearchIntent =
   | 'COMPARISON'
   | 'TREND';
 
+export type ContentType =
+  | 'Visual Prompt Recipe'
+  | 'How-To Guide'
+  | 'Trend Guide'
+  | 'Style Guide'
+  | 'Use-Case Guide'
+  | 'Commercial Prompt Guide';
+
+export interface ContentBrief {
+  topic: string;
+  primaryQuery: string;
+  secondaryQueries: string[];
+  searchIntent: SearchIntent;
+  targetAudience: string;
+  contentAngle: string;
+  whyThisPageShouldExist: string;
+  existingCompetingPages: { title: string; slug: string; similarityScore: number }[];
+  relatedCluster: string;
+  topicClusterId: string;
+  contentType: ContentType;
+  recommendedPromptCount: number;
+  recommendedPrompts: string[];
+  recommendedVisualExamples: string[];
+  internalLinkOpportunities: {
+    outbound: { targetSlug: string; targetTitle: string; reason: string }[];
+    inbound: { sourceSlug: string; sourceTitle: string; reason: string }[];
+  };
+  approvedByAdmin: boolean;
+  approvedAt?: string;
+}
+
+export interface PSEOMetricBreakdown {
+  searchDemand: number;
+  trendMomentum: number;
+  searchIntentClarity: number;
+  contentUniqueness: number;
+  coverageGap: number;
+  competition: number;
+  internalLinkPotential: number;
+  commercialValue: number;
+  freshness: number;
+}
+
+export interface PSEOOpportunityReport {
+  score: number;
+  breakdown: PSEOMetricBreakdown;
+  rationale: string;
+  intentAlignment: string;
+  recommendation: string;
+}
+
+export interface InboundLinkOpportunity {
+  id: string;
+  sourceArticleId: string;
+  sourceArticleTitle: string;
+  sourceSlug: string;
+  suggestedAnchorText: string;
+  targetSection: string;
+  reason: string;
+  reviewed: boolean;
+  accepted: boolean;
+}
+
+export interface BidirectionalLinkReport {
+  outboundSuggestions: InternalLinkSuggestion[];
+  inboundOpportunities: InboundLinkOpportunity[];
+}
+
+export interface SafetyCheckResult {
+  hasKeywordStuffing: boolean;
+  hasRepetitivePrompts: boolean;
+  hasThinContent: boolean;
+  hasGenericAILanguage: boolean;
+  isNearDuplicate: boolean;
+  passed: boolean;
+  violations: string[];
+}
+
 export type ContentStage =
   | 'IDEA'
   | 'RESEARCH'
@@ -117,12 +195,25 @@ export interface Article {
   subtitle?: string;
   metaTitle: string;
   metaDescription: string;
-  searchIntent?: SearchIntent;
-  targetQuery?: string;
-  topicId?: string;
+  canonicalUrl: string;
+  robotsDirective: string;
+  indexable: boolean;
+  status: 'IDEA' | 'DRAFT' | 'REVIEW' | 'PUBLISHED';
+
+  // FIRST-CLASS SEARCH INTENT & PSEO FIELDS (MANDATORY)
+  primaryQuery: string;
+  secondaryQueries: string[];
+  searchIntent: SearchIntent;
+  targetAudience: string;
+  topicId: string;
+  topicClusterId: string;
+  parentTopic?: string;
+  contentType: ContentType;
+
+  // Freshness & Authorship
   publishedAt: string;
   updatedAt: string;
-  lastReviewedAt?: string;
+  lastReviewedAt: string;
   sourceTrendId?: string;
   trendStatus?: TrendLifecycle;
   author: {
@@ -134,6 +225,12 @@ export interface Article {
   categorySlug: string;
   categoryName: string;
   readingTimeMinutes: number;
+
+  // Open Graph & Social
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+
   introduction: string[];
   quickOverviewHeading?: string;
   prompts: Prompt[];
@@ -154,6 +251,9 @@ export interface Article {
     publishedAt: string;
   }[];
   internalLinkSuggestions?: InternalLinkSuggestion[];
+  inboundLinkOpportunities?: InboundLinkOpportunity[];
+  contentBrief?: ContentBrief;
+  pseoReport?: PSEOOpportunityReport;
 }
 
 export interface Category {
@@ -243,10 +343,15 @@ export interface ContentProject {
   trendTitle?: string;
   topic: string;
   slug: string;
+  primaryQuery: string;
+  secondaryQueries: string[];
   searchIntent: SearchIntent;
   targetQuery: string;
-  contentType: string;
+  contentType: ContentType;
   targetAudience: string;
+  topicId: string;
+  topicClusterId: string;
+  parentTopic?: string;
   promptCount: number;
   imageCount: number;
   stage: ContentStage;
@@ -255,6 +360,9 @@ export interface ContentProject {
   seoScore?: number;
   visualScore?: number;
   editorialScore?: number;
+  pseoOpportunityScore?: number;
+  briefApproved?: boolean;
+  contentBrief?: ContentBrief;
   imageStatusSummary?: {
     ready: number;
     generating: number;

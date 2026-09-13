@@ -161,6 +161,49 @@ export default async function TrendDetailPage({ params }: TrendDetailPageProps) 
         </div>
       </div>
 
+      {/* Content Gap Discovery (Requirement 14) */}
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '8px', padding: '1.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: '#7C3AED' }}>
+                Automated Radar Synthesis
+              </span>
+              <span style={{ fontSize: '0.75rem', color: '#9CA3AF' }}>•</span>
+              <span style={{ fontSize: '0.75rem', color: '#4B5563' }}>Trending Topics + Existing Content + Topic Clusters</span>
+            </div>
+            <h2 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0 }}>Content Gap Discovery</h2>
+          </div>
+          <span className="status-pill status-pill-purple">Cluster Gaps Identified</span>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          <div style={{ padding: '1rem', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '6px' }}>
+            <div style={{ fontSize: '0.75rem', color: '#15803D', fontWeight: 700, marginBottom: '0.25rem' }}>✓ Existing Coverage</div>
+            <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>General 80s Retro Studio Prompts</div>
+            <div style={{ fontSize: '0.75rem', color: '#6B7280', marginTop: '0.25rem' }}>Status: Published & Ranking</div>
+          </div>
+
+          <div style={{ padding: '1rem', backgroundColor: '#FEFCE8', border: '1px solid #FEF08A', borderRadius: '6px' }}>
+            <div style={{ fontSize: '0.75rem', color: '#B45309', fontWeight: 700, marginBottom: '0.25rem' }}>Missing Opportunity #1 (Score: 92)</div>
+            <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>80s VHS Camcorder Aesthetic</div>
+            <div style={{ fontSize: '0.75rem', color: '#4B5563', marginTop: '0.25rem' }}>Search growth +184% • Low Competition</div>
+          </div>
+
+          <div style={{ padding: '1rem', backgroundColor: '#FEFCE8', border: '1px solid #FEF08A', borderRadius: '6px' }}>
+            <div style={{ fontSize: '0.75rem', color: '#B45309', fontWeight: 700, marginBottom: '0.25rem' }}>Missing Opportunity #2 (Score: 88)</div>
+            <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>80s Neon Arcade Portraits</div>
+            <div style={{ fontSize: '0.75rem', color: '#4B5563', marginTop: '0.25rem' }}>Search growth +142% • Rising Topic</div>
+          </div>
+
+          <div style={{ padding: '1rem', backgroundColor: '#FEFCE8', border: '1px solid #FEF08A', borderRadius: '6px' }}>
+            <div style={{ fontSize: '0.75rem', color: '#B45309', fontWeight: 700, marginBottom: '0.25rem' }}>Missing Opportunity #3 (Score: 84)</div>
+            <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>80s Mall Photography Candids</div>
+            <div style={{ fontSize: '0.75rem', color: '#4B5563', marginTop: '0.25rem' }}>Search growth +110% • Lifestyle Demand</div>
+          </div>
+        </div>
+      </div>
+
       {/* Content Opportunities List */}
       <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '8px', overflow: 'hidden' }}>
         <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

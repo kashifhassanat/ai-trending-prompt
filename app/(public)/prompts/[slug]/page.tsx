@@ -27,7 +27,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     };
   }
 
-  const canonicalUrl = `https://ai-trending-prompt.com/prompts/${article.slug}`;
+  const canonicalUrl = article.canonicalUrl || `https://ai-trending-prompt.com/prompts/${article.slug}`;
+  const isIndexable = article.indexable && article.status === 'PUBLISHED';
 
   return {
     title: article.metaTitle,
@@ -35,9 +36,18 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     alternates: {
       canonical: canonicalUrl,
     },
+    robots: isIndexable
+      ? { index: true, follow: true }
+      : { index: false, follow: false },
+    keywords: [
+      article.primaryQuery,
+      ...(article.secondaryQueries || []),
+      article.categoryName,
+      'AI prompt recipes',
+    ],
     openGraph: {
-      title: article.metaTitle,
-      description: article.metaDescription,
+      title: article.ogTitle || article.metaTitle,
+      description: article.ogDescription || article.metaDescription,
       url: canonicalUrl,
       type: 'article',
       publishedTime: article.publishedAt,
@@ -45,7 +55,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       authors: [article.author.name],
       images: [
         {
-          url: article.featuredMedia.url,
+          url: article.ogImage || article.featuredMedia.url,
           width: article.featuredMedia.width || 1280,
           height: article.featuredMedia.height || 720,
           alt: article.featuredMedia.altText,
@@ -54,9 +64,9 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.metaTitle,
-      description: article.metaDescription,
-      images: [article.featuredMedia.url],
+      title: article.ogTitle || article.metaTitle,
+      description: article.ogDescription || article.metaDescription,
+      images: [article.ogImage || article.featuredMedia.url],
     },
   };
 }
@@ -69,7 +79,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  // Article JSON-LD Schema
+  // Article JSON-LD Schema with visible ImageObject items
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -95,9 +105,47 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       '@type': 'WebPage',
       '@id': `https://ai-trending-prompt.com/prompts/${article.slug}`,
     },
+    associatedMedia: article.prompts.map(p => ({
+      '@type': 'ImageObject',
+      contentUrl: `https://ai-trending-prompt.com${p.media.url}`,
+      description: p.media.altText,
+      caption: p.title,
+    })),
   };
 
-  // FAQPage JSON-LD Schema
+  // BreadcrumbList JSON-LD Schema
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://ai-trending-prompt.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Prompts',
+        item: 'https://ai-trending-prompt.com/prompts',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: article.categoryName,
+        item: `https://ai-trending-prompt.com/categories#${article.categorySlug}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        name: article.title,
+        item: `https://ai-trending-prompt.com/prompts/${article.slug}`,
+      },
+    ],
+  };
+
+  // FAQPage JSON-LD Schema (Strictly mirrors visible FAQ section)
   const faqJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -126,6 +174,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       />
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
@@ -134,9 +186,25 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Article Header */}
         <header className="article-header">
-          <span className="article-category-badge">
-            {article.categoryName} • Prompt Collection
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            <span className="article-category-badge">
+              {article.categoryName}
+            </span>
+            <span style={{
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              padding: '0.2rem 0.6rem',
+              borderRadius: '4px',
+              backgroundColor: '#EFF6FF',
+              color: '#1D4ED8',
+              border: '1px solid #DBEAFE'
+            }}>
+              {article.contentType}
+            </span>
+          </div>
+
           <h1 className="editorial-h1 article-title">
             {article.title}
           </h1>
@@ -167,6 +235,17 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <span>Published: </span>
               <time dateTime={article.publishedAt}>
                 {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </time>
+            </div>
+
+            <div>
+              <span>Last Reviewed: </span>
+              <time dateTime={article.lastReviewedAt}>
+                {new Date(article.lastReviewedAt).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
                   year: 'numeric',
@@ -226,6 +305,34 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </div>
             ))}
           </div>
+        </section>
+
+        {/* Tailored Content Type Blueprint Section (Requirement 7) */}
+        <section style={{
+          margin: '2rem 0 3rem 0',
+          padding: '1.5rem',
+          backgroundColor: '#F8FAFC',
+          border: '1px solid #E2E8F0',
+          borderLeft: '4px solid #2563EB',
+          borderRadius: '8px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
+            <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700, color: '#1E40AF' }}>
+              {article.contentType} Blueprint
+            </span>
+            <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>•</span>
+            <span style={{ fontSize: '0.75rem', color: '#475569', fontWeight: 600 }}>Intent: {article.searchIntent}</span>
+            <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>•</span>
+            <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Audience: {article.targetAudience}</span>
+          </div>
+          <p style={{ margin: 0, fontSize: '0.875rem', color: '#334155', lineHeight: 1.5 }}>
+            {article.contentType === 'Visual Prompt Recipe' && 'Every recipe below pairs an exact generation prompt with tested aspect ratios, model configurations, and optical simulation notes for direct copying.'}
+            {article.contentType === 'How-To Guide' && 'Follow this step-by-step workflow to configure camera prompts, bypass AI digital smoothing, and reproduce authentic visual realism.'}
+            {article.contentType === 'Trend Guide' && 'Analyze the rapid velocity of this creative wave across social platforms with actionable prompts engineered to capture rising search demand.'}
+            {article.contentType === 'Style Guide' && 'Master the color grading, film emulsion physics, and lighting geometry defining this distinct visual aesthetic.'}
+            {article.contentType === 'Commercial Prompt Guide' && 'Produce high-converting product and brand photography prompts with clean negative prompting and professional studio setups.'}
+            {article.contentType === 'Use-Case Guide' && 'Tailored prompt blueprints engineered for specific production workflows, editorial shoots, and lookbook creation.'}
+          </p>
         </section>
 
         {/* The 7 Prompts: Exactly 7 prompts, each with 1 unique example image */}

@@ -26,13 +26,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Dynamic article routes
-  const articleRoutes: MetadataRoute.Sitemap = ALL_ARTICLES.map(article => ({
-    url: `${baseUrl}/prompts/${article.slug}`,
-    lastModified: new Date(article.updatedAt),
-    changeFrequency: 'weekly',
-    priority: 0.9,
-  }));
+  // Dynamic article routes - STRICT: Only PUBLISHED and indexable articles enter sitemap
+  const articleRoutes: MetadataRoute.Sitemap = ALL_ARTICLES
+    .filter(article => article.status === 'PUBLISHED' && article.indexable === true)
+    .map(article => ({
+      url: article.canonicalUrl || `${baseUrl}/prompts/${article.slug}`,
+      lastModified: new Date(article.updatedAt),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    }));
 
   return [...staticRoutes, ...articleRoutes];
 }

@@ -8,8 +8,34 @@ export const ARTICLE_80S_RETRO: Article = {
   subtitle: 'From soft-focus glamour portraits to neon-lit arcades and candid mall snapshots — master the exact prompts, camera simulations, and styling for authentic 1980s nostalgia.',
   metaTitle: '7 Best 80s Retro AI Photo Prompts (With Real Examples & Tips)',
   metaDescription: 'Discover the 7 best 80s retro AI photo prompts with real generated examples, copy-paste prompts, camera settings, and troubleshooting for Midjourney & Flux.',
+  canonicalUrl: 'https://ai-trending-prompt.com/prompts/80s-retro-photo-prompts',
+  robotsDirective: 'index, follow',
+  indexable: true,
+  status: 'PUBLISHED',
+
+  // FIRST-CLASS SEARCH INTENT & PSEO FIELDS (MANDATORY)
+  primaryQuery: '80s retro ai photo prompts',
+  secondaryQueries: [
+    '80s ai photo prompt midjourney',
+    'vintage 1980s photoshoot ai prompt',
+    'retro portrait prompt flux',
+    'how to make 80s photo with ai'
+  ],
+  searchIntent: 'INSPIRATION',
+  targetAudience: 'AI creators, digital artists, and nostalgic photographers',
+  topicId: 'top-80s-retro',
+  topicClusterId: 'cluster-styles',
+  parentTopic: 'Styles',
+  contentType: 'Visual Prompt Recipe',
+
   publishedAt: '2026-09-12T08:00:00Z',
   updatedAt: '2026-09-13T12:00:00Z',
+  lastReviewedAt: '2026-09-13T12:00:00Z',
+  sourceTrendId: 'trend-80s-retro',
+  trendStatus: 'TRENDING',
+  ogTitle: '7 Best 80s Retro AI Photo Prompts (With Real Examples & Tips)',
+  ogDescription: 'Discover the 7 best 80s retro AI photo prompts with real generated examples, copy-paste prompts, camera settings, and troubleshooting for Midjourney & Flux.',
+  ogImage: '/images/prompts/80s-retro/cover.jpg',
   author: {
     name: 'Elena Vance',
     role: 'Visual Prompt Architect',
@@ -169,6 +195,30 @@ export const ARTICLE_80S_RETRO: Article = {
       },
       categoryName: 'Analog & Polaroid',
       publishedAt: '2026-08-22T09:30:00Z'
+    }
+  ],
+  inboundLinkOpportunities: [
+    {
+      id: 'inb-1',
+      sourceArticleId: 'art-related-vintage-film',
+      sourceArticleTitle: 'Vintage Film Photo Prompts',
+      sourceSlug: 'vintage-film-photo-prompts',
+      suggestedAnchorText: '80s retro analog aesthetics',
+      targetSection: 'Analog Film Stocks Comparison',
+      reason: 'Connects general film stock guide to 1980s Kodachrome prompt recipes',
+      reviewed: true,
+      accepted: true
+    },
+    {
+      id: 'inb-2',
+      sourceArticleId: 'art-related-y2k',
+      sourceArticleTitle: 'Y2K Photo Prompts: Early 2000s Digicam Aesthetic',
+      sourceSlug: 'y2k-photo-prompts',
+      suggestedAnchorText: '1980s retro flash photography',
+      targetSection: 'Direct Flash Evolution',
+      reason: 'Historical contrast between 80s strobe flash and 2000s compact digicam flash',
+      reviewed: true,
+      accepted: true
     }
   ]
 };
