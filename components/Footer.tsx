@@ -72,11 +72,6 @@ export function Footer() {
             <h3 className="footer-column-title">Platform</h3>
             <ul className="footer-links">
               <li>
-                <Link href="/admin" className="footer-link">
-                  Admin Dashboard
-                </Link>
-              </li>
-              <li>
                 <Link href="/sitemap.xml" className="footer-link">
                   Sitemap
                 </Link>

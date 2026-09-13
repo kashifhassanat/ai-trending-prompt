@@ -98,13 +98,6 @@ export function Header() {
             >
               Latest
             </Link>
-            <Link
-              href="/admin"
-              className="mobile-nav-link"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Admin Dashboard (Placeholder)
-            </Link>
           </div>
         )}
       </header>

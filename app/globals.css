@@ -1287,3 +1287,293 @@ button, input {
 .admin-table tr:hover td {
   background-color: var(--bg-surface-muted);
 }
+
+/* Command Center Admin Layout */
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: #F8F9FA;
+  color: #1A1D20;
+  font-family: var(--font-sans);
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: #FFFFFF;
+  border-right: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.admin-sidebar-header {
+  padding: 1.5rem 1.25rem 1rem 1.25rem;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.admin-brand-title {
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-brand-subtitle {
+  font-size: 0.725rem;
+  color: #6B7280;
+  font-weight: 600;
+  margin-top: 0.2rem;
+  letter-spacing: 0.04em;
+}
+
+.admin-nav-group {
+  padding: 1rem 0.75rem;
+}
+
+.admin-nav-heading {
+  font-size: 0.675rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9CA3AF;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4B5563;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  margin-bottom: 0.15rem;
+}
+
+.admin-nav-item:hover {
+  background-color: #F3F4F6;
+  color: #111827;
+}
+
+.admin-nav-item.active {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  font-weight: 600;
+}
+
+.admin-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: #F8F9FA;
+}
+
+.admin-topbar {
+  height: 60px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.admin-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-environment-badge {
+  background-color: #FEF3C7;
+  color: #92400E;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #FDE68A;
+}
+
+.admin-content-container {
+  padding: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Status Pills & Indicators */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  line-height: 1;
+}
+
+.status-pill-green {
+  background-color: #DCFCE7;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.status-pill-yellow {
+  background-color: #FEF9C3;
+  color: #854D0E;
+  border: 1px solid #FEF08A;
+}
+
+.status-pill-red {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.status-pill-blue {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+}
+
+.status-pill-purple {
+  background-color: #F3E8FF;
+  color: #6B21A8;
+  border: 1px solid #E9D5FF;
+}
+
+/* Trend Radar Scoring Card */
+.score-badge-large {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  font-family: var(--font-mono);
+}
+
+.score-badge-green {
+  background-color: #DCFCE7;
+  color: #15803D;
+  border: 1px solid #86EFAC;
+}
+
+.score-badge-blue {
+  background-color: #DBEAFE;
+  color: #1D4ED8;
+  border: 1px solid #93C5FD;
+}
+
+.score-badge-amber {
+  background-color: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
+/* Pipeline Stage Track */
+.pipeline-track {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.75rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.pipeline-step {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6B7280;
+  white-space: nowrap;
+}
+
+.pipeline-step-active {
+  background-color: #111827;
+  color: #FFFFFF;
+  border-color: #111827;
+  font-weight: 600;
+}
+
+.pipeline-step-complete {
+  background-color: #F0FDF4;
+  color: #166534;
+  border-color: #BBF7D0;
+}
+
+/* Review Queue Split Layout */
+.review-split-view {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .review-split-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+.review-preview-panel {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 2rem;
+  max-height: calc(100vh - 180px);
+  overflow-y: auto;
+}
+
+.review-checklist-panel {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 1.75rem;
+  position: sticky;
+  top: 80px;
+}
+
+/* Publish Gate Box */
+.publish-gate-box {
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid transparent;
+}
+
+.publish-gate-ready {
+  background-color: #F0FDF4;
+  border-color: #BBF7D0;
+  color: #14532D;
+}
+
+.publish-gate-blocked {
+  background-color: #FEF2F2;
+  border-color: #FECACA;
+  color: #7F1D1D;
+}
